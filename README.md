@@ -25,7 +25,8 @@ Lint Tools - Dialyzer
 1. Система распределённого вычисления задач на базе Erlang
 2.  Платформа для автоматического транскрибирования и анализа голосовых сообщений с использованием Erlang и машинного обучения
 ### Литература
-"Programming Erlang: Software for a Concurrent World" — Джо Армстронг
+["Programming Erlang: Software for a Concurrent World"](https://www.programmer-books.com/wp-content/uploads/2018/10/Programming-Erlang-Software-for-a-Concurrent-World.pdf) — Джо Армстронг
 Эта книга написана одним из создателей Erlang, Джо Армстронгом. Она считается основополагающей для изучения языка, особенно его параллельных и распределённых возможностей. 
-"Learn You Some Erlang for Great Good!"" — Фред Хеберт
+
+["Learn You Some Erlang for Great Good!"](https://books.google.ru/books?id=WgYvDwAAQBAJ&hl=ru) — Фред Хеберт
 Это бесплатная книга, которая доступна онлайн и подробно объясняет язык Erlang с лёгким и юмористическим стилем. Она особенно полезна для начинающих.
