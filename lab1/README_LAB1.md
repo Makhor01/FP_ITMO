@@ -55,7 +55,7 @@ let () =  Printf.printf "Число, начинающее последовате
 
 
 ### Обычная рекурсия
-```
+```Ocaml
 (* Создаем хеш-таблицу для мемоизации *)
 let memo = Hashtbl.create 10000
 
@@ -102,7 +102,7 @@ o	Если n нечётное, вызывается collatz_length (3 * n + 1), 
 
 
 ### Модульной реализации
-```
+```Ocaml
 (* Модуль для работы с последовательностью Коллатца *)
 module Collatz = struct
   let memo = Hashtbl.create 10000
@@ -162,7 +162,7 @@ o	Если длина больше, чем текущая максимальна
 •	1000 представляется как "one thousand".
 ### Решение
 ### Обычная рекурсия
-```
+```Ocaml
 (* Определение слов для базовых чисел *)
 let ones = [| ""; "one"; "two"; "three"; "four"; "five"; "six"; "seven"; "eight"; "nine" |]
 let teens = [| "ten"; "eleven"; "twelve"; "thirteen"; "fourteen"; "fifteen"; "sixteen"; "seventeen"; "eighteen"; "nineteen" |]
@@ -200,7 +200,7 @@ let () = Printf.printf "Total letters: %d\n" result
 
 ### Хвостовая рекурсия 
 
-```
+```Ocaml
 (* Функция для получения количества букв в написании чисел от 0 до 19 *)
 let letters_1_to_19 n =
   match n with
@@ -273,7 +273,7 @@ let () =
 •	Иначе вызывается рекурсивный вызов, увеличивая n на 1 и добавляя результат count_letters n к аккумулятору.
  
 ### Модульное решение
-```
+```Ocaml
 (* Определение модуля с базовыми словами для чисел *)
 module NumberWords = struct
   let ones = [| ""; "one"; "two"; "three"; "four"; "five"; "six"; "seven"; "eight"; "nine" |]
@@ -339,7 +339,7 @@ o	Реализация: использует рекурсивный подход
  
 
 ### Работа с бесконечными списками
-```
+```Ocaml
 (* Определение слов для базовых чисел *)
 let ones = [| ""; "one"; "two"; "three"; "four"; "five"; "six"; "seven"; "eight"; "nine" |]
 let teens = [| "ten"; "eleven"; "twelve"; "thirteen"; "fourteen"; "fifteen"; "sixteen"; "seventeen"; "eighteen"; "nineteen" |]
