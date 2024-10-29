@@ -1,0 +1,37 @@
+(* Создаем хеш-таблицу для мемоизации *)
+let memo = Hashtbl.create 10000
+
+(* Добавляем начальное значение для числа 1 *)
+let () = Hashtbl.add memo 1 1
+
+(* Итеративная функция для вычисления длины цепочки Коллатца с конца в начало *)
+let collatz_length n =
+  let rec aux n chain =
+    if Hashtbl.mem memo n then
+      let known_length = Hashtbl.find memo n in
+      (* Сохраняем длину цепочки для всех промежуточных чисел *)
+      List.iteri (fun i x -> Hashtbl.add memo x (known_length + i)) (List.rev chain);
+      known_length + List.length chain
+    else
+      let next_n = if n mod 2 = 0 then n / 2 else 3 * n + 1 in
+      aux next_n (n :: chain)
+  in
+  aux n []
+
+(* Функция для нахождения числа с максимальной цепочкой Коллатца *)
+let compute () =
+  let max_length = ref 0 in
+  let number = ref 0 in
+  for i = 1 to 999999 do
+    let length = collatz_length i in
+    if length > !max_length then (
+      max_length := length;
+      number := i
+    )
+  done;
+  !number
+
+(* Выводим результат *)
+let () =
+  let result = compute () in
+  Printf.printf "Число, начинающее последовательность с самой длинной цепочкой: %d\n" result
