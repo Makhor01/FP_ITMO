@@ -1,37 +1,28 @@
-(* Создаем хеш-таблицу для мемоизации *)
-let memo = Hashtbl.create 10000
-
-(* Добавляем начальное значение для числа 1 *)
-let () = Hashtbl.add memo 1 1
-
-(* Итеративная функция для вычисления длины цепочки Коллатца с конца в начало *)
+(* Функция для вычисления длины последовательности Коллатца с использованием хвостовой рекурсии *)
 let collatz_length n =
-  let rec aux n chain =
-    if Hashtbl.mem memo n then
-      let known_length = Hashtbl.find memo n in
-      (* Сохраняем длину цепочки для всех промежуточных чисел *)
-      List.iteri (fun i x -> Hashtbl.add memo x (known_length + i)) (List.rev chain);
-      known_length + List.length chain
-    else
-      let next_n = if n mod 2 = 0 then n / 2 else 3 * n + 1 in
-      aux next_n (n :: chain)
+  let rec aux n length =
+    if n = 1 then length
+    else if n mod 2 = 0 then aux (n / 2) (length + 1)
+    else aux (3 * n + 1) (length + 1)
   in
-  aux n []
+  aux n 1
 
-(* Функция для нахождения числа с максимальной цепочкой Коллатца *)
-let compute () =
-  let max_length = ref 0 in
-  let number = ref 0 in
-  for i = 1 to 999999 do
-    let length = collatz_length i in
-    if length > !max_length then (
-      max_length := length;
-      number := i
-    )
-  done;
-  !number
+(* Функция для поиска числа с самой длинной последовательностью Коллатца до миллиона *)
+let find_longest_chain limit =
+  let rec aux current max_number max_length =
+    if current = limit then max_number
+    else
+      let length = collatz_length current in
+      if length > max_length then
+        aux (current + 1) current length
+      else
+        aux (current + 1) max_number max_length
+  in
+  aux 1 1 1
 
-(* Выводим результат *)
+(* Поиск числа с самой длинной последовательностью для чисел от 1 до 1_000_000 *)
+let result = find_longest_chain 1_000_000
+
 let () =
-  let result = compute () in
-  Printf.printf "Число, начинающее последовательность с самой длинной цепочкой: %d\n" result
+(* Выводим результат *)
+let () =  Printf.printf "Число, начинающее последовательность с самой длинной цепочкой: %d\n" result
