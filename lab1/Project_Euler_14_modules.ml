@@ -1,5 +1,5 @@
 (* Модуль для работы с последовательностью Коллатца *)
-module Collatz = struct
+module Collatz = structhttps://github.com/Makhor01/FP_ITMO/edit/main/lab1/Project_Euler_14_modules
   let memo = Hashtbl.create 10000
 
   (* Добавляем начальное значение для числа 1 *)
