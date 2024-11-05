@@ -1,0 +1,36 @@
+name: OCaml CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Install OCaml and Opam
+      uses: ocaml/setup-ocaml@v2
+      with:
+        ocaml-compiler: '4.14.0'   # Укажите нужную версию OCaml
+        opam-repositories: |
+          default
+          ocaml/opam-repository
+
+    - name: Install dependencies
+      run: opam install . --deps-only -y
+
+    - name: Build project
+      run: |
+        eval $(opam env)
+        dune build
+
+    - name: Run tests
+      run: |
+        eval $(opam env)
+        dune runtest
