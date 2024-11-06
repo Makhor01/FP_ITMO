@@ -2,48 +2,55 @@ name: OCaml CI
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   pull_request:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Cache OPAM
-      uses: actions/cache@v2
-      with:
-        path: ~/.opam
-        key: ${{ runner.os }}-opam-${{ hashFiles('**/opam') }}
-        restore-keys: |
-          ${{ runner.os }}-opam-
+      - name: Set up OCaml
+        uses: avsm/setup-ocaml@v2
+        with:
+          ocaml-version: 4.14.0
+          opam-version: 2.1.6
 
-    - name: Install OCaml and Opam
-      uses: ocaml/setup-ocaml@v2
-      with:
-        ocaml-compiler: '4.14.0'
-        opam-repositories: |
-          default
-          ocaml/opam-repository
+      - name: Cache opam
+        id: cache-opam
+        uses: actions/cache@v2
+        with:
+          path: ~/.opam
+          key: ${{ runner.os }}-opam-${{ hashFiles('**/*.opam.locked') }}
+          restore-keys: |
+            ${{ runner.os }}-opam-
 
-    - name: Initialise OPAM and install dependencies
-      run: |
-        opam init --disable-sandboxing --yes
-        eval $(opam env)
-        opam update
-        opam install . --deps-only --yes
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bubblewrap darcs g++-multilib gcc-multilib musl-tools
 
-    - name: Build project
-      run: |
-        eval $(opam env)
-        dune build
+      - name: Initialize opam and set up repositories
+        run: |
+          opam init --bare --disable-sandboxing -a
+          opam repository set-url default https://opam.ocaml.org
+          opam update
+        shell: bash
 
-    - name: Run tests
-      run: |
-        eval $(opam env)
-        dune runtest
+      - name: Install dependencies from lock file
+        run: opam install . --deps-only -y
+        shell: bash
 
+      - name: Build project
+        run: dune build
+        shell: bash
+
+      - name: Run tests
+        run: dune runtest
+        shell: bash
