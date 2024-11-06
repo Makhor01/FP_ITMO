@@ -19,8 +19,8 @@ jobs:
       - name: Set up OCaml
         uses: avsm/setup-ocaml@v2
         with:
-          ocaml-version: 4.14.0
-          opam-version: 2.1.6
+          ocaml-compiler: 4.14.0  # Указан поддерживаемый параметр вместо ocaml-version
+          opam-disable-sandboxing: true  # Опция для отключения sandboxing
 
       - name: Cache opam
         id: cache-opam
@@ -38,7 +38,7 @@ jobs:
 
       - name: Initialize opam and set up repositories
         run: |
-          opam init --bare --disable-sandboxing -a
+          opam init --bare -a
           opam repository set-url default https://opam.ocaml.org
           opam update
         shell: bash
