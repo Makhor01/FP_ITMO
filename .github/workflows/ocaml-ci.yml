@@ -14,16 +14,28 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+    - name: Cache OPAM
+      uses: actions/cache@v2
+      with:
+        path: ~/.opam
+        key: ${{ runner.os }}-opam-${{ hashFiles('**/opam') }}
+        restore-keys: |
+          ${{ runner.os }}-opam-
+
     - name: Install OCaml and Opam
       uses: ocaml/setup-ocaml@v2
       with:
-        ocaml-compiler: '4.14.0'   # Укажите нужную версию OCaml
+        ocaml-compiler: '4.14.0'
         opam-repositories: |
           default
           ocaml/opam-repository
 
-    - name: Install dependencies
-      run: opam install . --deps-only -y
+    - name: Initialise OPAM and install dependencies
+      run: |
+        opam init --disable-sandboxing --yes
+        eval $(opam env)
+        opam update
+        opam install . --deps-only --yes
 
     - name: Build project
       run: |
@@ -34,3 +46,4 @@ jobs:
       run: |
         eval $(opam env)
         dune runtest
+
